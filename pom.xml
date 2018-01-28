@@ -126,6 +126,18 @@
             <version>${postgresql.version}</version>
         </dependency>
 
+        <!-- Teamcity integration -->
+        <dependency>
+            <groupId>com.github.crystalservice</groupId>
+            <artifactId>thucydides-teamcity-steplistener</artifactId>
+            <version>0.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-lang</groupId>
+                    <artifactId>commons-lang</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
     </dependencies>
     <build>
@@ -143,6 +155,7 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${maven.failsafe.plugin.version}</version>
                 <configuration>
+                    <disableXmlReport>true</disableXmlReport>
                     <includes>
                         <include>**/*Test.java</include>
                         <include>**/Test*.java</include>
