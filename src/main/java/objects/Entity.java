@@ -1,8 +1,11 @@
 package objects;
 
+import utilites.ConfigReader;
+
 public interface Entity {
 
-    public final String BASE_URL ="http://localhost:9999/api";
+    String BASE_URL = ConfigReader.getProperty("baseUrl");
+    String AUTH = ConfigReader.getProperty("authString");
 
     long getId();
 

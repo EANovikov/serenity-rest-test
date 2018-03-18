@@ -5,7 +5,7 @@ public class Task implements Entity {
     /**
      * JSON body example
      * {
-     * "id": "QW",
+     * "id": "1",
      * "title": "Execute regression",
      * "remindDate": "2017-11-22",
      * "comment" : "use automated tests"

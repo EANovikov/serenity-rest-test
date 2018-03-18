@@ -29,6 +29,7 @@ class CreatePersonSteps extends BasePersonSteps {
     @Step("Get all person response contains expected multiply person")
     void getResponseContainsExpectedMultiplyPerson() {
         responseGet = SerenityRest.given()
+                .header("Authorization", Person.AUTH)
                 .contentType("application/json").get(Person.PERSONS_URL);
         responseGet.then().statusCode(200);
         assertThat(parser.jsonBodyToListOfStrings(responseGet.getBody().asString()),
@@ -38,7 +39,9 @@ class CreatePersonSteps extends BasePersonSteps {
     @Step("Get person response contains expected person")
      void getResponseContainsExpectedPerson() {
         responseGet = SerenityRest.given()
-                .contentType("application/json").get(Person.PERSON_URL + "/1");
+                .header("Authorization", Person.AUTH)
+                .pathParam("id", "1")
+                .contentType("application/json").get(Person.PERSON_URL + "/{id}");
         responseGet.then().statusCode(200);
         responseGet.then().body(is(response.getBody().asString()));
     }
@@ -49,13 +52,16 @@ class CreatePersonSteps extends BasePersonSteps {
             this.persons.add(person);
         }
         if (persons.size() == 1) {
-            response = SerenityRest.given().header("Content-Type", "application/x-www-form-urlencoded").
-                    formParam("id", persons.get(0).getId()).
-                    formParam("name", persons.get(0).getName()).log().all().
-                    when().
-                    post(Person.PERSON_URL);
+            response = SerenityRest.given()
+                    .header("Authorization", Person.AUTH)
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .formParam("id", persons.get(0).getId())
+                    .formParam("name", persons.get(0).getName()).log().all()
+                    .when()
+                    .post(Person.PERSON_URL);
         } else {
             response = SerenityRest.given()
+                    .header("Authorization", Person.AUTH)
                     .contentType("application/json").
                             body(new PersonBody(persons).getBody()).log().all().
                             when().
@@ -89,16 +95,19 @@ class CreatePersonSteps extends BasePersonSteps {
             this.invalidPersons.add(person);
         }
         if (persons.size() == 1) {
-            response = SerenityRest.given().header("Content-Type", "application/x-www-form-urlencoded")
+            response = SerenityRest.given()
+                    .header("Authorization", Person.AUTH)
+                    .header("Content-Type", "application/x-www-form-urlencoded")
                     .formParam("id", persons.get(0).getId())
                     .formParam("name", persons.get(0).getName())
                     .request().post(Person.PERSON_URL);
         } else {
             response = SerenityRest.given()
-                    .contentType("application/json").
-                            body(new PersonBody().setBodyInvalid(persons).getBody()).
-                            when().
-                            post(Person.PERSONS_URL);
+                    .header("Authorization", Person.AUTH)
+                    .contentType("application/json")
+                            .body(new PersonBody().setBodyInvalid(persons).getBody())
+                            .when()
+                            .post(Person.PERSONS_URL);
         }
     }
 

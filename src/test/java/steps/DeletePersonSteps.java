@@ -14,6 +14,7 @@ public class DeletePersonSteps extends BasePersonSteps {
     public void deletePersonById(int id){
         this.id= id;
         responseGet = SerenityRest.given()
+                .header("Authorization", Person.AUTH)
                 .contentType("application/json").delete(Person.PERSON_URL + "/" + 1);
         responseGet.then().statusCode(200);
     }
@@ -21,10 +22,10 @@ public class DeletePersonSteps extends BasePersonSteps {
     @Step("Get all person to check that person removed")
     public void getResponseWithDoesNotContainRemovedPerson() {
         responseGet = SerenityRest.given()
+                .header("Authorization", Person.AUTH)
                 .contentType("application/json").get(Person.PERSONS_URL);
         responseGet.then().statusCode(200);
         responseGet.then().body("id", not(id));
-        //assertThat(responseGet.getBody().asString(), not(id));
     }
 
 }

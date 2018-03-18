@@ -1,5 +1,7 @@
 package objects;
 
+import utilites.ConfigReader;
+
 import javax.json.Json;
 import javax.json.JsonObject;
 import java.util.ArrayList;
